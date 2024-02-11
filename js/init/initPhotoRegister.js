@@ -10,7 +10,7 @@ let userInfo = document.querySelector(".user__info");
 let userPhotoSection = document.querySelector("#photo_section");
 let dragSrcEl;
 let inputFile;
-
+let imagesCount = 0;
 let photoMsj = document.querySelector("#resp_msj_photo");
 
 /* Drag & Drop */
@@ -144,18 +144,21 @@ async function BtnDelete(elements) {
                 }, 3000);
             }else {
                 element.parentElement.remove();
-                userPhotoSection.innerHTML += AddPhotoBtn();
+                OnAddPhoto(imagesCount, contBtn);
                 ModPhotos();
-            }
-            
+            }      
         })
-    })
-
-    
+    }) 
 }
 
-let imagesCount = 0;
 
+async function OnAddPhoto(contImg) {
+    let contBtn = document.querySelectorAll('.btn_add_container').length;
+    if(contImg < 6 && contBtn == 0) {
+        userPhotoSection.innerHTML += AddPhotoBtn();
+        imagesCount++;
+    }
+}
 
 let myUser = await GetMyUser();
 
@@ -176,42 +179,36 @@ images.forEach((element, index) => {
     imagesCount++;
 });
 
-for(let i = imagesCount; i < 6; i++){
-    userPhotoSection.innerHTML += AddPhotoBtn();
-}
+OnAddPhoto(imagesCount);
 
-    let items = document.querySelectorAll('.user__photos .drag__container');
-    items.forEach(function(item) {
-        item.addEventListener('dragstart', handleDragStart);
-        item.addEventListener('dragover', handleDragOver);
-        item.addEventListener('dragenter', handleDragEnter);
-        item.addEventListener('dragleave', handleDragLeave);
-        item.addEventListener('dragend', handleDragEnd);
-        item.addEventListener('drop', handleDrop);
-    });
+let items = document.querySelectorAll('.user__photos .drag__container');
+items.forEach(function(item) {
+    item.addEventListener('dragstart', handleDragStart);
+    item.addEventListener('dragover', handleDragOver);
+    item.addEventListener('dragenter', handleDragEnter);
+    item.addEventListener('dragleave', handleDragLeave);
+    item.addEventListener('dragend', handleDragEnd);
+    item.addEventListener('drop', handleDrop);
+});
 
-    // inputFile = document.getElementById('input_id');
-    // inputFile.addEventListener('input', AddPhoto);
+document.addEventListener("input", (e) => {
 
-    document.addEventListener("input", (e) => {
+    let {target} = e;        
+    AddPhoto(target);
+})
 
-        let {target} = e;        
-        AddPhoto(target);
-    })
-
-    BtnDelete(document.querySelectorAll(".btn_delete"));
+BtnDelete(document.querySelectorAll(".btn_delete"));
 
 
-    document.addEventListener("click", (e) => {
-        let {target} = e;
+document.addEventListener("click", (e) => {
+    let {target} = e;
 
-        if(target.matches(".btn_delete")){
-            userPhotoSection.innerHTML += AddPhotoBtn();
-        }
+    if(target.matches(".btn_delete")){
+        userPhotoSection.innerHTML += AddPhotoBtn();
+    }
 
-        if(target.matches("#buttonSubmit")){
-            window.location = "../../views/PreferenceRegister.html"
-        }
-
-    });
+    if(target.matches("#buttonSubmit")){
+        window.location = "../../views/PreferenceRegister.html"
+    }
+});
 
