@@ -128,7 +128,6 @@ const RenderUser = async () =>
         edad--;
     }
 
-    
     let overall = await GetMyOverall();    
     if (!overall) {
         let request = {
