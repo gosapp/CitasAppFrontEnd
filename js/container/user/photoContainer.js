@@ -22,6 +22,7 @@ export const ModPhotos = async () => {
 
     if(response !== null) {
         BtnDelete(document.querySelectorAll(".btn_delete"));
+        RenderUserPhotos(response.response.images);
     }
 }
 
@@ -33,7 +34,6 @@ export const AddPhoto = async () => {
     const formData = new FormData();
     formData.append('file', inputFile.files[0]);
     let response = await UploadPhoto(formData);
-
     if(response == -1){
         photoMsj.innerHTML = "Se ha alcanzado el limite de fotos permitidas(max=6).";
         photoMsj.style.color = "#F02E3A";
@@ -43,6 +43,7 @@ export const AddPhoto = async () => {
         }, 3000);
     }
     else{
+        photoMsj.innerHTML = "";
         photoMsj.style.display = "block";
         RenderUserPhotos(response.response.images);
         
