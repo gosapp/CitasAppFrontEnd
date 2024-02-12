@@ -84,7 +84,11 @@ export async function RenderUserPhotos(photoList) {
         userPhotoSection.innerHTML += UserPageImg(index, element.id, element.url);
     });
 
-    userPhotoSection.innerHTML += AddPhotoBtn();
+    if(photoList.length < 6){
+        userPhotoSection.innerHTML += AddPhotoBtn();
+        let inputFile = document.getElementById('input_id');
+        inputFile.addEventListener('input', AddPhoto);
+    }
 
     let items = document.querySelectorAll('.user__photos .drag__container');
     items.forEach(function(item) {
@@ -96,8 +100,8 @@ export async function RenderUserPhotos(photoList) {
         item.addEventListener('drop', handleDrop);
     });
 
-    let inputFile = document.getElementById('input_id');
-    inputFile.addEventListener('input', AddPhoto);
+    // let inputFile = document.getElementById('input_id');
+    // inputFile.addEventListener('input', AddPhoto);
 
     BtnDelete(document.querySelectorAll(".btn_delete"));
 }
@@ -112,6 +116,7 @@ const RenderUser = async () =>
 
     let mail = claims.Mail;
     let images = user.images;
+    //console.log(images.length);
 
     userInfo.innerHTML = '';
     userPhotoSection.innerHTML = '';
