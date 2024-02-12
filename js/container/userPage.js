@@ -100,9 +100,6 @@ export async function RenderUserPhotos(photoList) {
         item.addEventListener('drop', handleDrop);
     });
 
-    // let inputFile = document.getElementById('input_id');
-    // inputFile.addEventListener('input', AddPhoto);
-
     BtnDelete(document.querySelectorAll(".btn_delete"));
 }
 
@@ -116,7 +113,6 @@ const RenderUser = async () =>
 
     let mail = claims.Mail;
     let images = user.images;
-    //console.log(images.length);
 
     userInfo.innerHTML = '';
     userPhotoSection.innerHTML = '';
