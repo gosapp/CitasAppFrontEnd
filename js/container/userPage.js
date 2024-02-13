@@ -107,7 +107,6 @@ export async function RenderUserPhotos(photoList) {
 const RenderUser = async () =>
 {
     let user = await GetMyUser();
-
     const jwtToken = sessionStorage.getItem("token");
     const claims = await DecodeToken(jwtToken);
 
