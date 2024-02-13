@@ -32,14 +32,13 @@ document.addEventListener("submit", async function(e)
             msj.innerHTML = "Te has conectado exitosamente.";
             msj.style.color = "#41BC02";
             msj.style.display = 'block';
-            
-            let user = await GetMyUser();
 
             sessionStorage.setItem("token", resp.token);
+            let user = await GetMyUser();
 
             setTimeout(() => {
                 Redirect(user);
-            }, 5000);
+            }, 2000);
         }
         else if(resp == -1) {
             msj.innerHTML = "Credenciales incorrectas.";
