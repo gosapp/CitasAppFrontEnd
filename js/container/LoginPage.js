@@ -27,19 +27,19 @@ document.addEventListener("submit", async function(e)
         }
 
         const resp = await login(auth);
-        
+
         if(resp.message == "Ha iniciado sesión") {
             msj.innerHTML = "Te has conectado exitosamente.";
             msj.style.color = "#41BC02";
             msj.style.display = 'block';
             
-            sessionStorage.setItem("token", resp.token);
-            
             let user = await GetMyUser();
+
+            sessionStorage.setItem("token", resp.token);
 
             setTimeout(() => {
                 Redirect(user);
-            }, 1000);
+            }, 5000);
         }
         else if(resp == -1) {
             msj.innerHTML = "Credenciales incorrectas.";

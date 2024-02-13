@@ -6,16 +6,17 @@ import { ButtonsLike } from "../components/button-like.js";
 import { SuggestionData } from "../components/suggestion-data.js";
 import { RenderModalMatch } from "../components/modalMatch.js";
 import { GetMyMatchs, UpdateMatch } from "../services/fetchMatchServices.js";
+import { DecodeToken } from "../utils/decode.js";
 
-let userId;
 let suggestions = await GetMySuggestions();
-
 let matchsMe = await GetMyMatchs();
 
 let matchsNew;
+
 document.getElementById("spinner-container").classList.add('spinner-hidden');
 
 let firstSuggestion;
+let firstSuggestionMatch;
 let carouselIndicators = document.getElementById('carousel-indicators');
 let carouselInner = document.getElementById('carousel-inner');
 let containerLike = document.getElementById('container-like');
@@ -23,8 +24,11 @@ let containerData = document.getElementById('container-data');
 let suggestionData = document.getElementById('suggestions-data');
 let emptySuggestions = document.getElementById('empty-suggestions');
 
+const jwtToken = sessionStorage.getItem("token");
+const claims = await DecodeToken(jwtToken);
+let userId = claims.UserId;
+
 if(matchsMe && matchsMe.response && matchsMe.response.matches && matchsMe.response.matches.length > 0) {
-    userId = matchsMe.response.userMe.userId;
     matchsNew = matchsMe.response.matches.filter(x => (x.view1 == false && x.user1 == userId) || (x.view2 == false && x.user2 == userId) );   
     matchsNew.forEach((x) => {
         console.log(x);
@@ -59,7 +63,7 @@ if (matchsNew != undefined && matchsNew.length > 0) {
     let imagesNew = [];
     imagesNew.push({id: 0, url: firstSuggestionNew.userInfo.images});
 
-    firstSuggestion = {name: firstSuggestionNew.userInfo.name, lastName: firstSuggestionNew.userInfo.lastName, images: imagesNew, userId: firstSuggestionNew.userInfo.userId, matchId: firstSuggestionNew.matchId, user1: firstSuggestionNew.user1, user2: firstSuggestionNew.user2};
+    firstSuggestionMatch = {name: firstSuggestionNew.userInfo.name, lastName: firstSuggestionNew.userInfo.lastName, images: imagesNew, userId: firstSuggestionNew.userInfo.userId, matchId: firstSuggestionNew.matchId, user1: firstSuggestionNew.user1, user2: firstSuggestionNew.user2};
 
     showModalMatch();
 }else{
@@ -183,7 +187,7 @@ async function likeDislike(action, userId){
     if (response.response){
         await DeleteSuggestion(userId);
         if(response.response.isMatch){
-            showModalMatch();
+            location.reload();
         }
     }
     setTimeout(() => {
@@ -191,48 +195,53 @@ async function likeDislike(action, userId){
     }, 2000);
 }
 
-function renderMatch() {
+async function renderMatch() {
 
-    let fullName = firstSuggestion.name + ' ' + firstSuggestion.lastName;
+    console.log(firstSuggestionMatch);
+    await updateMatchView(userId, firstSuggestionMatch);
+    let fullName = firstSuggestionMatch.name + ' ' + firstSuggestionMatch.lastName;
     let photoMatch;
-    if (firstSuggestion.images.length > 0) {        
-        photoMatch = firstSuggestion.images[0].url;
+    if (firstSuggestionMatch.images.length > 0) {        
+        photoMatch = firstSuggestionMatch.images[0].url;
     } 
     else{
         photoMatch = '../img/user-default.png', 0;
     }
 
     let modalBody = document.getElementById("modalMatchBody");
-    modalBody.innerHTML = RenderModalMatch(fullName, photoMatch);  
+    modalBody.innerHTML = RenderModalMatch(fullName, photoMatch);
 
     let element = document.getElementById('btn-hablar');
     element.addEventListener('click', async () =>{
-        await updateMatchView();
+        
         setTimeout(() => {
-            //location.reload();
+            location.reload();
             window.location = '../../views/Chat.html';
-        }, 1000);
+        }, 3000);
     });
 
-    setTimeout(() => {
+    setTimeout(async () => {
         var locModalImg = document.getElementById('img-animation-match');
         locModalImg.classList.remove("show-animation");
-    }, 1000);
+    }, 5000);
 }
 
-async function updateMatchView() {
+async function updateMatchView(myId, suggestion) {
 
     let request;
-    if(userId == firstSuggestion.user1) {
+
+    if(myId === suggestion.user1.toString()) {
+        console.log(1);
         request = {
-            user1: userId,
-            user2: firstSuggestion.userId
+            user1: parseInt(myId),
+            user2: suggestion.userId
         }
     }
-    else if(userId == firstSuggestion.user2) {
+    else if(myId === suggestion.user2.toString()) {
+        console.log(2);
         request = {
-            user1: firstSuggestion.userId,
-            user2: userId
+            user1: suggestion.userId,
+            user2: parseInt(myId)
         }
     }
 
