@@ -33,7 +33,7 @@ if(matchsMe && matchsMe.response && matchsMe.response.matches && matchsMe.respon
 
 $('#modalMatch').on('hidden.bs.modal', function () {
     updateMatchView();    
-    location.reload()
+    location.reload();
 });
 
 
@@ -209,7 +209,8 @@ function renderMatch() {
     element.addEventListener('click', async () =>{
         await updateMatchView();
         setTimeout(() => {
-            window.location = '../../views/Chat.html'
+            //location.reload();
+            window.location = '../../views/Chat.html';
         }, 1000);
     });
 

@@ -15,33 +15,15 @@ export const login = async (request) => {
     if(response.ok && response.status == 200){
         result = await response.json();
     }
-    else{
+    else if(response.status == 401) {
+        result = -1;
+    }
+    else {
         result = null;
     }
 
     return result;
 }
-
-//Agarralo del token
-/*
-export const GetMail = async (request) => {
-
-    let result;
-    let response = await fetch(urlBase,{
-        method: "GET",
-        headers:{
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${JwtToken}`
-        }
-    })
-
-    if(response.ok){
-        result = await response.json();
-    }
-    
-    return result;
-}
-*/
 
 export const PutPasswd = async (request) => {
     

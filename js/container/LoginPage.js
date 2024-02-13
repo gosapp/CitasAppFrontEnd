@@ -7,11 +7,6 @@ const Redirect = (user) =>
     if(user?.userId){
        window.location.href = "../../views/Matches.html";
     };   
-
-    //!No existe un usuario con esta cuenta
-    if(user?.status){
-       window.location.href = "../../views/PerformanceRegister.html";
-    };
 }
 
 document.addEventListener("submit", async function(e)
@@ -32,12 +27,8 @@ document.addEventListener("submit", async function(e)
         }
 
         const resp = await login(auth);
-        if(resp == null){
-            msj.innerHTML = "email o contraseña incorrecto.";
-            setTimeout(() => {
-                msj.innerHTML = "";
-            }, 1000);
-        }else{
+        
+        if(resp.message == "Ha iniciado sesión") {
             msj.innerHTML = "Te has conectado exitosamente.";
             msj.style.color = "#41BC02";
             msj.style.display = 'block';
@@ -48,8 +39,19 @@ document.addEventListener("submit", async function(e)
 
             setTimeout(() => {
                 Redirect(user);
-                //window.location = "../../views/Matches.html";
             }, 1000);
+        }
+        else if(resp == -1) {
+            msj.innerHTML = "Credenciales incorrectas.";
+            setTimeout(() => {
+                msj.innerHTML = "";
+        }, 2000);
+        } 
+        else {
+            msj.innerHTML = "Hubo un problema durante el logueo.";
+            setTimeout(() => {
+                msj.innerHTML = "";
+        }, 2000);
         }
     }
 })
