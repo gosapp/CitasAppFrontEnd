@@ -29,6 +29,43 @@ export const GetMyUser = async () =>
     return result;
 }
 
+export const ListUsers = async (arrayUsr) =>
+{
+    JwtToken = sessionStorage.getItem("token");
+    let result;
+    let query = "";
+    let queryParam = "&usersId=";
+    for(let i=0; i<arrayUsr.length; i++){
+        if(i< arrayUsr.length-1){
+            query += arrayUsr[i] + queryParam;
+        } else{
+            query += arrayUsr[i];
+        }
+    }
+    console.log(query);
+
+    let response = await fetch(`${urlBase}/User/false?usersId=${arrayUsr}`, {
+        method: "GET",
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${JwtToken}` 
+        }
+    })
+    console.log(response);
+    if(response.ok){
+        result = await response.json();
+
+    }
+
+    if(response.status == 404 || response.status == 401){
+        result = {
+            status : response.status
+        }
+    }
+    
+    return result;
+}
+
 export const ChangeUser = async (request) => 
 {
     JwtToken = sessionStorage.getItem("token");
