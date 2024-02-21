@@ -80,7 +80,7 @@ if (matchsNew != undefined && matchsNew.length > 0) {
 
 function renderSuggestion(){    
     firstSuggestion = suggestions.suggestedUsers.pop();
-    
+    console.log(firstSuggestion);
     if(firstSuggestion != undefined){
         let preferences = getPreferences(firstSuggestion.ourPreferences);
         let dateFormatted = getDate(firstSuggestion.birthday);
@@ -136,7 +136,7 @@ function age(birthdate) {
 }
 
 function getPreferences(ourPreferences){
-    let interests = ''
+    let interests = '';
     if(ourPreferences != undefined && ourPreferences.ownCategoryPreferences.length > 0){
         ourPreferences.ownCategoryPreferences.forEach(category => {
             category.interestPreferencesId.forEach(preference => {

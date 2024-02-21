@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking de usuarios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/rankPageStyle.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@latest/dist/browser/signalr.min.js"></script>
+    <script defer type="module" src="../js/container/miniHub.js"></script>  
+</head>
+<body>
+    <div id="navbar">
+        <!-- navbar.js -->
+    </div>
+
+    <main id="rank_main">
+
+        <section class="headerDates">
+            <div class="headerDate__content" style="flex-direction:row;">
+                <img id="main__dates_logo" src="../img/globo-blanco.png" alt="logo">
+                <h4 style="color:white;">CitasApp</h4>
+            </div>
+            <div class="headerDate__button">
+            </div>
+        </section>
+
+        <div class="rank_title">
+            <h1>Top 10 usuarios con más matches</h1>
+        </div>
+        <section class="rank_cards_container">
+
+        </section>
+
+    </main>
+    <script type="module" src="\js\init\initNavbar.js"></script>
+    <script type="module" src="\js\container\rankPage.js"></script>    
+</body>
+</html>

@@ -59,3 +59,21 @@ export const UpdateMatch = async (request) =>
     
     return result;
 }
+
+export const GetRanking = async (request) =>
+{
+    let result;
+    let response = await fetch(`${urlBase}/Match/rank`, {
+        method: "GET",
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${JwtToken}` 
+        },
+        body: JSON.stringify(request)
+    })
+    if(response.ok) {
+        result = await response.json();
+    }
+    
+    return result;
+}
